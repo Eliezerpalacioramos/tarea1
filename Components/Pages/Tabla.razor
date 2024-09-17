@@ -1,0 +1,59 @@
+@page "/tabla"
+@rendermode InteractiveServer
+
+<h2>Tabla de Multiplicar</h2>
+
+<input type="number" @bind="numero" placeholder="Ingresa un número" min="1" />
+<button @onclick="MostrarTabla">Mostrar Tabla</button>
+
+@if (tabla.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Multiplicando</th>
+                <th>Resultado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var resultado in tabla)
+            {
+                <tr>
+                    <td>@resultado.Multiplicando</td>
+                    <td>@resultado.Resultado</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Ingresa un número y presiona el botón para ver la tabla.</p>
+}
+
+@code {
+    private int numero;
+    private List<ResultadoMultiplicacion> tabla = new List<ResultadoMultiplicacion>();
+
+    private void MostrarTabla()
+    {
+        tabla.Clear();
+        if (numero > 0)
+        {
+            for (int i = 1; i <= 15; i++)
+            {
+                tabla.Add(new ResultadoMultiplicacion
+                {
+                    Multiplicando = $"{i} x {numero}",
+                    Resultado = (i * numero).ToString()
+                });
+            }
+        }
+    }
+
+    private class ResultadoMultiplicacion
+    {
+        public string Multiplicando { get; set; }
+        public string Resultado { get; set; }
+    }
+}
